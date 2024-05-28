@@ -1,5 +1,6 @@
 package br.net.silvalopes.park_api.service;
 
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 import br.net.silvalopes.park_api.entity.Usuario;
@@ -16,6 +17,22 @@ public class UsuarioService {
     @Transactional
     public Usuario salvar(Usuario usuario) {
         return usuarioRepository.save(usuario);
+    }
+
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Usuário não encontrado."));
+    }
+
+    @Transactional
+    public Usuario editarSenha(Long id, String password) {
+        Usuario usuario = buscarPorId(id);
+        usuario.setPassword(password);
+        return usuario;
+    }
+
+    public List<Usuario> buscarTodos() {
+        return usuarioRepository.findAll();
     }
 
 }
